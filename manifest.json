@@ -1,0 +1,11 @@
+{
+    "display_name": "Arousal System",
+    "loading_order": 11,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Lucanna",
+    "version": "1.0.0",
+    "homePage": "https://github.com/lannashelton/ST-Arousal-System/"
+}
