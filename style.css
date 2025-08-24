@@ -1,0 +1,115 @@
+/* Arousal System */
+#arousal-panel {
+    position: fixed;
+    top: 180px;
+    right: 20px;
+    width: 320px;
+    background: linear-gradient(135deg, #8a3fd9 0%, #5d22a8 100%);
+    border: 1px solid #a055f0;
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    display: none;
+    user-select: none;
+    color: #ffffff;
+    transition: transform 0.3s ease;
+}
+
+#arousal-panel.dragging {
+    transform: scale(1.015);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+.draggable-header {
+    cursor: move;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.parts-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.part-btn {
+    padding: 10px 5px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.part-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.part-btn.active {
+    background: rgba(255, 107, 136, 0.8) !important;
+    box-shadow: 0 0 10px rgba(255, 107, 136, 0.5) !important;
+    color: #fff;
+}
+
+.progress-section {
+    margin-bottom: 15px;
+}
+
+.progress-section .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.progress-container {
+    height: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 5px rgba(255,255,255,0.2);
+}
+
+#arousal-bar {
+    background: linear-gradient(90deg, #ff6b88 0%, #ff2e74 100%);
+}
+
+.progress-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(0,0,0,0.7);
+}
+
+#orgasm-count {
+    color: #ffd700;
+    font-weight: bold;
+}
