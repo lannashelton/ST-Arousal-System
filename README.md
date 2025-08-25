@@ -39,8 +39,8 @@ This roleplay uses an autonomous code called "Arousal System". It increases or d
 - After each multiple orgasm, the chance to have another one is reduced.
 - There is an orgasm combo tracker. If character has 5 successive orgasms non-stop, they faint from exhaustion.
 
-**Planned Features:**
-- Stimulation buttons for characters with a penis.
+## Planned Features
+- Stimulation buttons such as "Penis" and "Prostate" for characters with a penis. These options will also have their own unique orgasm dynamics.
 
 ## License
 
