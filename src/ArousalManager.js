@@ -3,14 +3,16 @@ import { saveSettingsDebounced } from "../../../../../script.js";
 
 export class ArousalManager {
     constructor() {
-        this.bodyParts = ['breasts', 'nipples', 'vagina', 'clitoris', 'g-spot', 'anal'];
+        this.bodyParts = ['breasts', 'nipples', 'vagina', 'clitoris', 'g-spot', 'anal', 'penis', 'prostate'];
         this.partValues = {
             'breasts': 1,
             'nipples': 2,
             'vagina': 8,
             'clitoris': 10,
             'g-spot': 12,
-            'anal': 4
+            'anal': 4,
+            'penis': 10,
+            'prostate': 12
         };
         this.character = null;
         this.state = {
@@ -146,14 +148,14 @@ export class ArousalManager {
     
     generateHighArousalMessage() {
         const parts = Object.keys(this.state.activeParts);
-        const hasInternal = parts.includes('g-spot') || parts.includes('vagina');
+        const hasInternal = parts.includes('g-spot') || parts.includes('vagina') || parts.includes('prostate');
         
         let message = `${this.character.name} is close to having an orgasm!`;
         
         if (hasInternal) {
-            message += ` Her vaginal muscles coil and clench as she feels herself getting close!`;
+            message += ` Their internal muscles coil and clench as they feel themselves getting close!`;
         } else {
-            message += ` Her body trembles with anticipation.`;
+            message += ` Their body trembles with anticipation.`;
         }
         
         return `[Arousal System] ${message}`;
@@ -164,48 +166,109 @@ export class ArousalManager {
         let newArousal;
         let isMultiOrgasm = false;
         let isSquirting = false;
+        let isProstateOrgasm = false;
+        let isPenisOrgasm = false;
         
-        const multiChance = Object.keys(this.state.activeParts).includes('g-spot') ? 0.6 : 0.3;
+        // Determine orgasm type
+        if (this.state.activeParts['prostate'] && !this.state.activeParts['penis']) {
+            isProstateOrgasm = true;
+            isMultiOrgasm = Math.random() < 1.0; // Always multi until limit
+        } else if (this.state.activeParts['penis']) {
+            isPenisOrgasm = true;
+            isMultiOrgasm = Math.random() < 0.0; // Never multi
+        } else if (this.state.activeParts['g-spot']) {
+            isSquirting = Math.random() < 0.7;
+            isMultiOrgasm = Math.random() < 0.6;
+        } else {
+            isMultiOrgasm = Math.random() < 0.3;
+        }
         
-        if (Math.random() < multiChance) {
+        // Handle multi-orgasms or reset
+        if (isMultiOrgasm && this.state.orgasmCount < 5) {
             newArousal = 80;
             this.state.orgasmCount++;
-            isMultiOrgasm = true;
-            
-            if (this.state.orgasmCount >= 5) {
-                newArousal = 0;
-            }
         } else {
-            newArousal = 20;
+            newArousal = isProstateOrgasm ? 0 : 20;
             this.state.orgasmCount = 0;
         }
         
-        // Check for squirting
-        if (Object.keys(this.state.activeParts).includes('g-spot')) {
-            isSquirting = Math.random() < 0.7;
+        // Handle reaching orgasm limit
+        if (this.state.orgasmCount >= 5) {
+            newArousal = 0; // Exhausted
+            this.state.orgasmCount = 0;
         }
         
-        // Generate orgasm message
-        let message = '';
-        if (isMultiOrgasm && this.state.orgasmCount < 5) {
-            if (isSquirting) {
-                message = `${this.character.name} is having a squirting orgasm! Her juices jet out of her sex with a climax! ${this.character.name}'s arousal remained high, ready to have another one!`;
-            } else {
-                message = `${this.character.name} is having an orgasm! Her pelvic muscles start to contract rhythmically as she cums! She remains highly aroused.`;
-            }
-        } else if (isMultiOrgasm && this.state.orgasmCount >= 5) {
-            message = `${this.character.name} is having ${this.state.orgasmCount > 1 ? 'another' : 'an'} intense orgasm! Her body convulses violently before she collapses unconscious, completely exhausted!`;
-        } else {
-            if (isSquirting) {
-                message = `${this.character.name} is having a squirting orgasm! Her juices jet out of her sex as she climaxes intensely!`;
-            } else {
-                message = `${this.character.name} is having an orgasm! Her pelvic muscles start to contract rhythmically as she cums!`;
-            }
-        }
+        // Generate orgasm message based on type and intensity
+        let message = this.generateOrgasmMessage(isSquirting, isProstateOrgasm, isPenisOrgasm);
         
         this.state.arousal = newArousal;
         this.saveState();
         
         return `[Arousal System] ${message}`;
+    }
+    
+    generateOrgasmMessage(isSquirting, isProstateOrgasm, isPenisOrgasm) {
+        const intensity = this.state.orgasmCount;
+        const intensityWords = [
+            "", 
+            "intense ", 
+            "powerful ", 
+            "overwhelming ", 
+            "mind-shattering ",
+            "unconscious "
+        ];
+        
+        let description = `${this.character.name} is having `;
+        
+        if (isProstateOrgasm) {
+            if (intensity >= 5) {
+                description = `${this.character.name} collapses unconscious from ${intensityWords[intensity]}pleasure after multiple prostate orgasms!`;
+            } else if (intensity === 0) {
+                description = `${this.character.name} has a prostate orgasm! Their body quivers as their cock leaks clear fluid.`;
+            } else {
+                description = `${this.character.name} has ${intensityWords[intensity]}prostate orgasm #${intensity+1}! `;
+                
+                if (intensity === 1) {
+                    description += `Their prostate pulses intensely, leaking more precum!`;
+                } else if (intensity === 2) {
+                    description += `Their penis twitches violently, spraying thin streams of precum!`;
+                } else if (intensity === 3) {
+                    description += `Their whole body shakes uncontrollably as pleasure overwhelms them!`;
+                } else if (intensity === 4) {
+                    description += `They scream out as ecstasy consumes their entire body!`;
+                }
+            }
+        } 
+        else if (isPenisOrgasm) {
+            description = `${this.character.name} has a penis orgasm! Their member pulses and sprays thick ropes of semen!`;
+        } 
+        else if (isSquirting) {
+            if (intensity >= 5) {
+                description = `${this.character.name} collapses unconscious after multiple squirting orgasms!`;
+            } else if (intensity === 0) {
+                description = `${this.character.name} has a ${intensityWords[intensity]}squirting orgasm! Fluid jets out in a powerful arc!`;
+            } else {
+                description = `${this.character.name} has ${intensityWords[intensity]}squirting orgasm #${intensity+1}! `;
+                
+                if (intensity === 1) {
+                    description += `Their vaginal walls ripple as more fluid gushes out!`;
+                } else if (intensity === 2) {
+                    description += `Their legs shake uncontrollably as pleasure courses through them!`;
+                } else if (intensity === 3) {
+                    description += `Their core muscles contract violently, spraying fluid!`;
+                } else if (intensity === 4) {
+                    description += `Their vision goes white as ecstasy overwhelms them!`;
+                }
+            }
+        } 
+        else {
+            if (intensity >= 5) {
+                description = `${this.character.name} passes out from relentless orgasms!`;
+            } else {
+                description = `${this.character.name} has ${intensityWords[intensity]}orgasm! Their body convulses rhythmically.`;
+            }
+        }
+        
+        return description;
     }
 }
