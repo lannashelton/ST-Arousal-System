@@ -41,6 +41,7 @@ This roleplay uses an autonomous code called "Arousal System". It increases or d
 
 ## Planned Features
 - Stimulation buttons such as "Penis" and "Prostate" for characters with a penis. These options will also have their own unique orgasm dynamics.
+- Will make system messages completely gender neutral to cover any kind of character and genital combination
 
 ## License
 
