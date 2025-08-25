@@ -25,11 +25,13 @@ export class ArousalPanel {
                     <button data-part="clitoris" class="part-btn">Clitoris</button>
                     <button data-part="g-spot" class="part-btn">G-Spot</button>
                     <button data-part="anal" class="part-btn">Anal</button>
+                    <button data-part="penis" class="part-btn">Penis</button>
+                    <button data-part="prostate" class="part-btn">Prostate</button>
                 </div>
                 
                 <div class="progress-section">
                     <div class="header">
-                        <span>Orgasm Meter:</span>
+                        <span>Arousal Level:</span>
                         <span id="arousal-text">0%</span>
                     </div>
                     <div class="progress-container">
@@ -180,7 +182,7 @@ export class ArousalPanel {
             const chatInput = document.getElementById('send_textarea');
             if (!chatInput) return;
             
-            chatInput.value = `/sys compact=true ${message}`;
+            chatInput.value = `/sys ${message}`;
             
             const sendButton = document.querySelector('#send_but');
             if (sendButton) {
