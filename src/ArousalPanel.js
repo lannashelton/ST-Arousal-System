@@ -29,7 +29,7 @@ export class ArousalPanel {
                 
                 <div class="progress-section">
                     <div class="header">
-                        <span>Arousal Level:</span>
+                        <span>Orgasm Meter:</span>
                         <span id="arousal-text">0%</span>
                     </div>
                     <div class="progress-container">
@@ -180,7 +180,7 @@ export class ArousalPanel {
             const chatInput = document.getElementById('send_textarea');
             if (!chatInput) return;
             
-            chatInput.value = `/sys ${message}`;
+            chatInput.value = `/sys compact=true ${message}`;
             
             const sendButton = document.querySelector('#send_but');
             if (sendButton) {
