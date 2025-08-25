@@ -29,7 +29,7 @@ export class ArousalPanel {
                 
                 <div class="progress-section">
                     <div class="header">
-                        <span>Arousal Level:</span>
+                        <span>Orgasm Meter:</span>
                         <span id="arousal-text">0%</span>
                     </div>
                     <div class="progress-container">
