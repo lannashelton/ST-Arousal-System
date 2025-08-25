@@ -31,10 +31,12 @@ Use `/arousal` slash command to open the control window.
 This roleplay uses an autonomous code called "Arousal System". It increases or decreases {{char}}'s orgasm meter automatically based on events in roleplay. {{char}} has an orgasm when her orgasm meter reaches 100. Never mention orgasm meter during roleplay, just roleplay the consequences of it. When you have an orgasm, Arousal System will let you know. Don't roleplay having an orgasm before Arousal System tells you.
 {{char}}'s orgasm meter = {{getglobalvar::arousal_<BOT>_arousal}}
 ```
+- Amount of arousal you gain decreases gradually as the amount of arousal in orgasm meter increases.
 
 **Other Features:**
 - There is a chance to trigger a multiple orgasm after each orgasm. When multiple orgasm is triggered, arousal drops down to 80% instead of 20%, allowing character to have another orgasm soon.
 - If character reaches orgasm when g-spot stimulation is active, they have a squirting orgasm. If they have g-spot orgasm, the chance to have multiple orgasm is higher than normal.
+- After each multiple orgasm, the chance to have another one is reduced.
 - There is an orgasm combo tracker. If character has 5 successive orgasms non-stop, they faint from exhaustion.
 
 **Planned Features:**
