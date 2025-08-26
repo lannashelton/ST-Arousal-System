@@ -31,7 +31,7 @@ export class ArousalPanel {
                 
                 <!-- SPEED SELECTOR SECTION -->
                 <div style="margin: 15px 0; text-align: center;">
-                    <div style="font-weight: bold; margin-bottom: 5px;">Simulation Speed</div>
+                    <div style="font-weight: bold; margin-bottom: 5px;">Arousal Increase Speed</div>
                     <div class="speed-selector" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                         <button data-speed="slow" class="speed-btn">Slow (0.5x)</button>
                         <button data-speed="normal" class="speed-btn">Normal (1x)</button>
