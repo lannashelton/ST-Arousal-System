@@ -113,3 +113,34 @@
     color: #ffd700;
     font-weight: bold;
 }
+
+.speed-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.speed-btn {
+    padding: 8px 5px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.speed-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.speed-btn.active {
+    background: rgba(46, 204, 113, 0.8) !important;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5) !important;
+    color: #fff;
+}
