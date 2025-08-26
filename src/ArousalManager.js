@@ -14,11 +14,17 @@ export class ArousalManager {
             'penis': 10,
             'prostate': 12
         };
+        this.speedLevels = {
+            'slow': 0.5,
+            'normal': 1.0,
+            'fast': 2.0
+        }
         this.character = null;
         this.state = {
             activeParts: {},
             arousal: 0,
-            orgasmCount: 0
+            orgasmCount: 0,
+            speed: 'normal' // Add speed setting
         };
     }
 
@@ -72,6 +78,7 @@ export class ArousalManager {
         // Load other state values
         this.state.arousal = parseFloat(this.getGlobalVariable('arousal')) || 0;
         this.state.orgasmCount = parseInt(this.getGlobalVariable('orgasm_count')) || 0;
+        this.state.speed = this.getGlobalVariable('speed', true) || 'normal';
         
         // Clamp arousal between 0-100
         if (this.state.arousal < 0) this.state.arousal = 0;
@@ -84,6 +91,7 @@ export class ArousalManager {
         this.setGlobalVariable('activeParts', JSON.stringify(this.state.activeParts));
         this.setGlobalVariable('arousal', this.state.arousal);
         this.setGlobalVariable('orgasm_count', this.state.orgasmCount);
+        this.setGlobalVariable('speed', this.state.speed); // Save speed
     }
     
     togglePart(part) {
@@ -108,6 +116,9 @@ export class ArousalManager {
         for (const part in this.state.activeParts) {
             baseGain += this.partValues[part];
         }
+        
+        // Apply speed multiplier
+        baseGain *= this.speedLevels[this.state.speed];
         
         // Apply diminishing returns based on current arousal
         let actualGain = baseGain;
@@ -144,6 +155,13 @@ export class ArousalManager {
         
         this.saveState();
         return result;
+    }
+
+    setSpeed(speed) {
+        if (!this.speedLevels[speed]) return;
+        this.state.speed = speed;
+        this.saveState();
+        return `Speed set to ${speed} (${this.speedLevels[speed]}x)`;
     }
     
     generateHighArousalMessage() {
