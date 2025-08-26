@@ -29,6 +29,16 @@ export class ArousalPanel {
                     <button data-part="prostate" class="part-btn">Prostate</button>
                 </div>
                 
+                <!-- SPEED SELECTOR SECTION -->
+                <div style="margin: 15px 0; text-align: center;">
+                    <div style="font-weight: bold; margin-bottom: 5px;">Simulation Speed</div>
+                    <div class="speed-selector" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                        <button data-speed="slow" class="speed-btn">Slow (0.5x)</button>
+                        <button data-speed="normal" class="speed-btn">Normal (1x)</button>
+                        <button data-speed="fast" class="speed-btn">Fast (2x)</button>
+                    </div>
+                </div>
+                
                 <div class="progress-section">
                     <div class="header">
                         <span>Arousal Level:</span>
@@ -42,6 +52,9 @@ export class ArousalPanel {
                 
                 <div style="margin-top: 15px; text-align: center;">
                     Successive Orgasm Count: <span id="orgasm-count">0</span>
+                    <div style="font-size: 0.9em; margin-top: 5px; color: #ddd;">
+                        Current Speed: <span id="current-speed">normal (1x)</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -49,6 +62,7 @@ export class ArousalPanel {
         document.body.appendChild(panel);
         return panel;
     }
+
 
     makeDraggable(element) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -106,6 +120,7 @@ export class ArousalPanel {
         const arousalText = this.domElement.querySelector('#arousal-text');
         const barText = this.domElement.querySelector('.progress-text');
         const orgasmCount = this.domElement.querySelector('#orgasm-count');
+        const currentSpeed = this.domElement.querySelector('#current-speed');
         
         if (arousalBar) {
             arousalBar.style.width = `${this.manager.state.arousal}%`;
@@ -119,9 +134,35 @@ export class ArousalPanel {
         if (orgasmCount) {
             orgasmCount.textContent = this.manager.state.orgasmCount;
         }
+        if (currentSpeed) {
+            const speed = this.manager.state.speed;
+            const multiplier = this.manager.speedLevels[speed];
+            currentSpeed.textContent = `${speed} (${multiplier}x)`;
+        }
         
         // Update button states
         this.updateButtonStates();
+        
+        // Update speed button states
+        this.updateSpeedButtonStates();
+    }
+
+    updateSpeedButtonStates() {
+        if (!this.domElement) return;
+        const buttons = this.domElement.querySelectorAll('.speed-btn');
+        
+        buttons.forEach(btn => {
+            const speed = btn.dataset.speed;
+            if (speed === this.manager.state.speed) {
+                btn.classList.add('active');
+                btn.style.backgroundColor = 'rgba(46, 204, 113, 0.8)';
+                btn.style.boxShadow = '0 0 10px rgba(46, 204, 113, 0.5)';
+            } else {
+                btn.classList.remove('active');
+                btn.style.backgroundColor = 'rgba(255,255,255,0.15)';
+                btn.style.boxShadow = 'none';
+            }
+        });
     }
 
     bindEvents() {
@@ -145,6 +186,16 @@ export class ArousalPanel {
             this.manager.loadState();
             toastr.info('Arousal stats reloaded');
             this.update();
+        });
+
+        // Speed buttons
+        this.domElement.querySelectorAll('.speed-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.manager.setSpeed(btn.dataset.speed);
+                toastr.info(`Simulation speed set to ${btn.dataset.speed}`);
+                this.update();
+            });
         });
     }
 
